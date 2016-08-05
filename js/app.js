@@ -5,15 +5,13 @@ var App = React.createClass({
             isEditor: true
         }
     },
-    isChange: function () {
-        this.setState({isEditor: !this.state.isEditor});
-    },
     add: function (e) {
         const elements = this.state.elements;
         elements.push(e);
         this.setState(elements);
 
-    }, delete: function (i) {
+    },
+    delete: function (i) {
         const elements = this.state.elements;
         elements.splice(i, 1);
         this.setState(elements);
