@@ -22,8 +22,12 @@ var App = React.createClass({
     render: function () {
         const isEditor = this.state.isEditor;
         return (
-            <div>
-                <button onClick={this.isChange}>{isEditor ? 'preview' : 'editor'}</button>
+            <div >
+                <div className=" col-center-block">
+                    <button className="btn btn-primary"
+                            onClick={this.isChange}>{isEditor ? 'preview' : 'editor'}</button>
+                </div>
+                <br/>
                 <div className={isEditor ? " " : "hidden"}>
                     <Editor onAdd={this.add} onDelete={this.delete} elements={this.state.elements}/>
                 </div>
@@ -39,25 +43,34 @@ var Editor = React.createClass({
     render: function () {
         return (
             <div>
-                <Left onDelete={this.props.onDelete} elements={this.props.elements}/>
-                <Right onAdd={this.props.onAdd}/>
+                <div className="col-md-4  ">
+                    <Left onDelete={this.props.onDelete} elements={this.props.elements}/>
+                </div>
+                <div className="col-md-4  col-md-offset-4 ">
+                    <Right onAdd={this.props.onAdd}/>
+                </div>
             </div>
-
         )
     }
 });
 var Left = React.createClass({
     delete: function (i) {
         this.props.onDelete(i);
-
     },
     render: function () {
         const elements = this.props.elements.map((e, i)=> {
-            return <div key={i}>
-                <input type={e}/>
-                <button onClick={this.delete.bind(this, i)}>X</button>
+            return <div key={i} className="input-group  inline">
+
+                <input className="form-control" type={e}/>
+                <span className="input-group-btn">
+                    <button className="btn btn-default inline"
+                            onClick={this.delete.bind(this.i)}>
+                         <span className="glyphicon glyphicon-remove"/>
+                    </button>
+                </span>
+
             </div>
-        })
+        });
 
         return (
             <div>{elements}</div>
@@ -73,10 +86,14 @@ var Right = React.createClass({
     },
     render: function () {
         return (
-            <div>
+            <div >
                 <input type="radio" name="input" value="text"/>文本框
+                <br/>
                 <input type="radio" name="input" value="date"/>日期
-                <button onClick={this.add}>+</button>
+                <br/>
+                <button onClick={this.add} className="btn btn-primary">
+                    <span className="glyphicon glyphicon-plus"/>
+                </button>
             </div>
 
         )
@@ -85,16 +102,28 @@ var Right = React.createClass({
 var Preview = React.createClass({
     render: function () {
         const elements = this.props.elements.map((e, i)=> {
-            return <div key={i}>
-                <input type={e}/>
+            return <div className="inline" key={i}>
+                <input className="form-control" type={e}/>
             </div>
-        })
+        });
         return (
-            <div>{elements}
-                <button>submmit</button>
+            <div>
+                <div id="border" className="col-md-6 col-md-offset-3">
+                    <div className=" col-center-block ">
+                        <br/>
+                        {elements}
+                        <br/>
+
+                    </div>
+                </div>
+                <br/>
+                <div className=" col-center-block ">
+                    <button className="btn btn-primary " id="my">submmit</button>
+                </div>
             </div>
 
         )
     }
 });
-ReactDOM.render(<App/>, document.getElementById("content"))
+ReactDOM.render(<App/>, document.getElementById("content"));
+
