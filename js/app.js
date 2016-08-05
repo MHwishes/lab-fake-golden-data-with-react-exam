@@ -23,17 +23,13 @@ var App = React.createClass({
         const isEditor = this.state.isEditor;
         return (
             <div >
-                <div className=" col-center-block">
-                    <button className="btn btn-primary"
-                            onClick={this.isChange}>{isEditor ? 'preview' : 'editor'}</button>
-                </div>
-                <br/>
-                <div className={isEditor ? " " : "hidden"}>
-                    <Editor onAdd={this.add} onDelete={this.delete} elements={this.state.elements}/>
-                </div>
-                <div className={isEditor ? "hidden " : ""}>
-                    <Preview elements={this.state.elements}/>
-                </div>
+
+                {this.props.children && React.cloneElement(this.props.children, {
+                    elements: this.state.elements,
+                    onAdd: this.add,
+                    onDelete: this.delete
+
+                }) }
             </div>
 
         )
@@ -43,6 +39,9 @@ var Editor = React.createClass({
     render: function () {
         return (
             <div>
+                <ReactRouter.Link to="/previewer">
+                    <div id="center"> Preview</div>
+                </ReactRouter.Link>
                 <div className="col-md-4  ">
                     <Left onDelete={this.props.onDelete} elements={this.props.elements}/>
                 </div>
@@ -101,6 +100,8 @@ var Right = React.createClass({
 });
 var Preview = React.createClass({
     render: function () {
+
+
         const elements = this.props.elements.map((e, i)=> {
             return <div className="inline" key={i}>
                 <input className="form-control" type={e}/>
@@ -108,15 +109,18 @@ var Preview = React.createClass({
         });
         return (
             <div>
+
+                <ReactRouter.Link to="/">
+                    <div id="center">Editor</div>
+                </ReactRouter.Link>
+
                 <div id="border" className="col-md-6 col-md-offset-3">
                     <div className=" col-center-block ">
                         <br/>
                         {elements}
                         <br/>
-
                     </div>
                 </div>
-                <br/>
                 <div className=" col-center-block ">
                     <button className="btn btn-primary " id="my">submmit</button>
                 </div>
@@ -125,5 +129,10 @@ var Preview = React.createClass({
         )
     }
 });
-ReactDOM.render(<App/>, document.getElementById("content"));
+ReactDOM.render(<ReactRouter.Router>
+    <ReactRouter.Route path="/" component={App}>
+        <ReactRouter.IndexRoute component={Editor}/>
+        <ReactRouter.Route path="previewer" component={Preview}/>
+    </ReactRouter.Route>
+</ReactRouter.Router >, document.getElementById("content"));
 
