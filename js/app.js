@@ -13,9 +13,9 @@ var App = React.createClass({
         elements.push(e);
         this.setState(elements);
 
-    },delete: function (i) {
+    }, delete: function (i) {
         const elements = this.state.elements;
-        elements.splice(i,1);
+        elements.splice(i, 1);
         this.setState(elements);
 
     },
@@ -28,7 +28,7 @@ var App = React.createClass({
                     <Editor onAdd={this.add} onDelete={this.delete} elements={this.state.elements}/>
                 </div>
                 <div className={isEditor ? "hidden " : ""}>
-                    <Preview/>
+                    <Preview elements={this.state.elements}/>
                 </div>
             </div>
 
@@ -47,15 +47,15 @@ var Editor = React.createClass({
     }
 });
 var Left = React.createClass({
-    delete:function (i) {
-      this.props.onDelete(i);
+    delete: function (i) {
+        this.props.onDelete(i);
 
     },
     render: function () {
         const elements = this.props.elements.map((e, i)=> {
             return <div key={i}>
                 <input type={e}/>
-                <button onClick={this.delete.bind(this,i)}>X</button>
+                <button onClick={this.delete.bind(this, i)}>X</button>
             </div>
         })
 
@@ -84,8 +84,15 @@ var Right = React.createClass({
 });
 var Preview = React.createClass({
     render: function () {
+        const elements = this.props.elements.map((e, i)=> {
+            return <div key={i}>
+                <input type={e}/>
+            </div>
+        })
         return (
-            <div></div>
+            <div>{elements}
+                <button>submmit</button>
+            </div>
 
         )
     }
