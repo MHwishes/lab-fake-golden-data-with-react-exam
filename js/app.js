@@ -8,6 +8,12 @@ var App = React.createClass({
     isChange: function () {
         this.setState({isEditor: !this.state.isEditor});
     },
+    add:function (e) {
+        const  elements=this.state.elements;
+        elements.push(e);
+        this.setState(elements);
+
+    },
     render: function () {
         const isEditor = this.state.isEditor;
         return (
@@ -29,7 +35,7 @@ var Editor = React.createClass({
         return (
         <div>
             <Left/>
-            <right onAdd={this.props.onAdd}/>
+            <Right onAdd={this.props.onAdd}/>
         </div>
            
         )
@@ -37,6 +43,8 @@ var Editor = React.createClass({
 });
 var Left = React.createClass({
     render: function () {
+
+
         return (
         <div></div>
 
@@ -44,7 +52,22 @@ var Left = React.createClass({
     }
 });
 
+var Right = React.createClass({
+    add:function () {
+        const  e=$("input[name=input]:checked").val();
+        this.props.onAdd(e);
+    },
+    render: function () {
+        return (
+            <div>
+                <input type="radio" name="input" value="text"/>文本框
+                <input type="radio" name="input" value="date"/>日期
+                <button onClick={this.add}>+</button>
+            </div>
 
+        )
+    }
+});
 var Preview = React.createClass({
     render: function () {
         return (
