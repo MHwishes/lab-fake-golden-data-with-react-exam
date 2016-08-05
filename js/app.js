@@ -8,9 +8,14 @@ var App = React.createClass({
     isChange: function () {
         this.setState({isEditor: !this.state.isEditor});
     },
-    add:function (e) {
-        const  elements=this.state.elements;
+    add: function (e) {
+        const elements = this.state.elements;
         elements.push(e);
+        this.setState(elements);
+
+    },delete: function (i) {
+        const elements = this.state.elements;
+        elements.splice(i,1);
         this.setState(elements);
 
     },
@@ -33,28 +38,37 @@ var App = React.createClass({
 var Editor = React.createClass({
     render: function () {
         return (
-        <div>
-            <Left/>
-            <Right onAdd={this.props.onAdd}/>
-        </div>
-           
+            <div>
+                <Left onDelete={this.props.onDelete} elements={this.props.elements}/>
+                <Right onAdd={this.props.onAdd}/>
+            </div>
+
         )
     }
 });
 var Left = React.createClass({
-    render: function () {
+    delete:function (i) {
+      this.props.onDelete(i);
 
+    },
+    render: function () {
+        const elements = this.props.elements.map((e, i)=> {
+            return <div key={i}>
+                <input type={e}/>
+                <button onClick={this.delete.bind(this,i)}>X</button>
+            </div>
+        })
 
         return (
-        <div></div>
+            <div>{elements}</div>
 
         )
     }
 });
 
 var Right = React.createClass({
-    add:function () {
-        const  e=$("input[name=input]:checked").val();
+    add: function () {
+        const e = $("input[name=input]:checked").val();
         this.props.onAdd(e);
     },
     render: function () {
@@ -71,8 +85,8 @@ var Right = React.createClass({
 var Preview = React.createClass({
     render: function () {
         return (
-        <div></div>
-           
+            <div></div>
+
         )
     }
 });
